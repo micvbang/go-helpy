@@ -51,12 +51,20 @@ func Pointer(v {{.Type}}) *{{.Type}} {
 	return &v
 }
 
-// {{if .TypeName}}{{.TypeName}}{{else}}{{.Type | Title}}{{end}} dereferences and returns {{.Type}}. If v is nil, the default value is returned.
+// {{if .TypeName}}{{.TypeName}}{{else}}{{.Type | Title}}{{end}} dereferences and returns {{.Type}}. The {{.Type}} default value is returned if v is nil.
 func {{if .TypeName}}{{.TypeName}}{{else}}{{.Type | Title}}{{end}}(v *{{.Type}}) {{.Type}} {
 	if v == nil {
 		var dv {{.Type}}
 		return dv
 	}
 	return *v
+}
+
+// {{if .TypeName}}{{.TypeName}}{{else}}{{.Type | Title}}{{end}}OrDefault returns {{.Type}} if it is not nil, and a pointer to defaultVal otherwise.
+func {{if .TypeName}}{{.TypeName}}{{else}}{{.Type | Title}}{{end}}OrDefault(v *{{.Type}}, defaultVal {{.Type}}) *{{.Type}} {
+	if v == nil {
+		return &defaultVal
+	}
+	return v
 }
 `
