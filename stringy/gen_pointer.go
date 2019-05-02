@@ -7,7 +7,7 @@ func Pointer(v string) *string {
 	return &v
 }
 
-// String dereferences and returns string. If v is nil, the default value is returned.
+// String dereferences and returns string. The string default value is returned if v is nil.
 func String(v *string) string {
 	if v == nil {
 		var dv string
@@ -16,4 +16,11 @@ func String(v *string) string {
 	return *v
 }
 
+// StringOrDefault dereferences and returns string. defaultVal is returned if v is nil.
+func StringOrDefault(v *string, defaultVal string) string {
+	if v == nil {
+		var dv string
+		return dv
+	}
+	return *v
 }
