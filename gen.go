@@ -25,6 +25,7 @@ func main() {}
 // string
 //go:generate go run gen/pointer/pointer.go -type string -package-name stringy
 //go:generate go run gen/unique/unique.go -type string -package-name stringy
+//go:generate go run gen/set/set.go -type string -package-name stringy
 
 // time.Time
 //go:generate go run gen/pointer/pointer.go -type time.Time -type-name Time -package-name timey -import time
