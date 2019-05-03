@@ -15,4 +15,3 @@ func Unique(vs []uint64) []uint64 {
 
 	return output
 }
-

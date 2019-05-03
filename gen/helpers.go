@@ -16,7 +16,7 @@ func GenerateToPackage(packageName, fileName string, templateExecute func(io.Wri
 	}
 
 	genPath := path.Join(packageName, fileName)
-	f, err := os.OpenFile(genPath, os.O_CREATE|os.O_RDWR, 0755)
+	f, err := os.OpenFile(genPath, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0755)
 	if err != nil {
 		log.Fatal(err)
 	}

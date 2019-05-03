@@ -6,6 +6,8 @@ func main() {}
 //go:generate go run gen/pointer/pointer.go -type int -package-name inty
 //go:generate go run gen/unique/unique.go -type int -package-name inty
 //go:generate go run gen/minmax/minmax.go -type int -package-name inty
+//go:generate go run gen/contains/contains.go -type int -package-name inty
+//go:generate go run gen/set/set.go -type int -package-name inty
 
 // int64
 //go:generate go run gen/pointer/pointer.go -type int64 -package-name int64y

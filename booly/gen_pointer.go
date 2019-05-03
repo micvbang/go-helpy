@@ -23,4 +23,3 @@ func BoolOrDefault(v *bool, defaultVal bool) *bool {
 	}
 	return v
 }
-}
