@@ -39,7 +39,7 @@ func Min(v {{.Type}}, vs ...{{.Type}}) {{.Type}} {
 			min = v
 		}
 	}
-	return v
+	return min
 }
 
 
@@ -51,6 +51,6 @@ func Max(v {{.Type}}, vs ...{{.Type}}) {{.Type}} {
 			max = v
 		}
 	}
-	return v
+	return max
 }
 `

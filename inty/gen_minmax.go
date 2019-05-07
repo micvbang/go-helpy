@@ -10,7 +10,7 @@ func Min(v int, vs ...int) int {
 			min = v
 		}
 	}
-	return v
+	return min
 }
 
 // Max returns the maximum value from v and vs.
@@ -21,5 +21,5 @@ func Max(v int, vs ...int) int {
 			max = v
 		}
 	}
-	return v
+	return max
 }
