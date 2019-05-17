@@ -16,12 +16,12 @@ func TestMin(t *testing.T) {
 		"in order":      {input: []int{1, 2}, expected: 1},
 		"reverse order": {input: []int{5, 2}, expected: 2},
 		"3 arguments":   {input: []int{10, 5, 15}, expected: 5},
-		"4 arguments":   {input: []int{1, 500, 100}, expected: 1},
-		"10 arguments":  {input: []int{17, 25, 1, 0, 101, 1337, 42, 13, 37, 69}, expected: 0},
+		"4 arguments":   {input: []int{1, 122, 100}, expected: 1},
+		"10 arguments":  {input: []int{17, 25, 1, 0, 101, 125, 42, 13, 37, 69}, expected: 0},
 
 		"one negative":          {input: []int{-5, 10}, expected: -5},
 		"both negative":         {input: []int{-5, -100}, expected: -100},
-		"10 arguments negative": {input: []int{17, 25, -1, 0, -101, 1337, 42, -13, 37, 69}, expected: -101},
+		"10 arguments negative": {input: []int{17, 25, -1, 0, -101, 127, 42, -13, 37, 69}, expected: -101},
 	}
 
 	for name, tc := range tests {
