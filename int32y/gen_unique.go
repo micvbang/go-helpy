@@ -9,6 +9,7 @@ func Unique(vs []int32) []int32 {
 
 	for _, v := range vs {
 		if _, exists := seen[v]; !exists {
+			seen[v] = struct{}{}
 			output = append(output, v)
 		}
 	}
