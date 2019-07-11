@@ -21,7 +21,6 @@ func main() {
 	flag.Parse()
 
 	t := template.Must(template.New("unique").Parse(uniqueTemplate))
-
 	gen.GenerateToPackage(d.PackageName, "gen_unique.go", func(w io.Writer) error {
 		return t.Execute(w, d)
 	})

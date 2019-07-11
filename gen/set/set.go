@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"io"
+	"strings"
 	"text/template"
 
 	"github.com/micvbang/go-helpy/gen"
@@ -20,11 +21,17 @@ func main() {
 	flag.StringVar(&d.PackageName, "package-name", "", "The name used for the queue being generated. This should start with a capital letter so that it is exported.")
 	flag.Parse()
 
-	t := template.Must(template.New("template").Parse(setTemplate))
-
+	set := template.Must(template.New("template").Parse(setTemplate))
 	gen.GenerateToPackage(d.PackageName, "gen_set.go", func(w io.Writer) error {
-		return t.Execute(w, d)
+		return set.Execute(w, d)
 	})
+
+	if strings.HasPrefix(d.Type, "int") {
+		setTest := template.Must(template.New("template").Parse(setTemplateTest))
+		gen.GenerateToPackage(d.PackageName, "gen_set_test.go", func(w io.Writer) error {
+			return setTest.Execute(w, d)
+		})
+	}
 }
 
 const setTemplate = `
@@ -40,7 +47,7 @@ func (s Set) Contains(v {{.Type}}) bool {
 	return exists
 }
 
-// Intersect returns a Set of the intersection between two Sets.
+// Intersect returns the intersection of two Sets.
 func (s Set) Intersect(s2 Set) Set {
 	short, long := s, s2
 	if len(s2) < len(s) {
@@ -56,6 +63,35 @@ func (s Set) Intersect(s2 Set) Set {
 	return m
 }
 
+// Union returns the union of two Sets.
+func (s Set) Union(s2 Set) Set {
+	m := make(map[{{.Type}}]struct{}, len(s) + len(s2))
+	for k := range s {
+		m[k] = struct{}{}
+	}
+
+	for k := range s2 {
+		m[k] = struct{}{}
+	}
+
+	return m
+}
+
+// Equal checks whether all 
+func (s Set) Equal(s2 Set) bool {
+	if len(s) != len(s2) {
+		return false
+	}
+
+	for v := range s {
+		if _, ok := s2[v]; !ok {
+			return false
+		}
+	}
+
+	return true
+}
+
 // ToSet returns a lookup map for {{.Type}}.
 func ToSet(vs []{{.Type}}) Set {
 	m := make(map[{{.Type}}]struct{})
@@ -64,5 +100,53 @@ func ToSet(vs []{{.Type}}) Set {
 	}
 
 	return m
+}
+`
+
+const setTemplateTest = `
+package {{.PackageName}}
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/require"
+)
+
+// Code generated. DO NOT EDIT.
+
+
+func TestSetIntersect(t *testing.T) {
+	tests := map[string]struct {
+		s1 Set
+		s2 Set
+		expected Set
+	}{
+		"empty intersection": {
+			s1: ToSet([]{{.Type}}{1, 2, 3, 4}),
+			s2: ToSet([]{{.Type}}{5, 6, 7, 8}),
+			expected: ToSet([]{{.Type}}{}),
+		},
+		"one common": {
+			s1: ToSet([]{{.Type}}{1, 2, 3, 4}),
+			s2: ToSet([]{{.Type}}{2, 6, 7, 8}),
+			expected: ToSet([]{{.Type}}{2}),
+		},
+		"multiple common": {
+			s1: ToSet([]{{.Type}}{1, 2, 3, 4}),
+			s2: ToSet([]{{.Type}}{2, 1, 7, 4}),
+			expected: ToSet([]{{.Type}}{1, 2, 4}),
+		},
+		"all common": {
+			s1: ToSet([]{{.Type}}{1, 2, 3, 4}),
+			s2: ToSet([]{{.Type}}{4, 3, 2, 1}),
+			expected: ToSet([]{{.Type}}{1, 2, 3, 4}),
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			require.True(t, tc.s1.Intersect(tc.s2).Equal(tc.expected))
+		})
+    }	
 }
 `
