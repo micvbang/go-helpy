@@ -22,6 +22,7 @@ func TestFileExists(t *testing.T) {
 		"dir exists": {
 			fileName:       "dir-1",
 			expectedExists: true,
+			isDir:          true,
 		},
 		"file doesn't exists": {
 			fileName:       "no-file-1",
