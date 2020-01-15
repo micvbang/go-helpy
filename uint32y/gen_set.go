@@ -64,3 +64,8 @@ func ToSet(vs []uint32) Set {
 
 	return m
 }
+
+// MakeSet returns a lookup map for uint32
+func MakeSet(vs ...uint32) Set {
+	return ToSet(vs)
+}

@@ -101,6 +101,11 @@ func ToSet(vs []{{.Type}}) Set {
 
 	return m
 }
+
+// MakeSet returns a lookup map for {{.Type}}
+func MakeSet(vs ...{{.Type}}) Set {
+	return ToSet(vs)
+}
 `
 
 const setTemplateTest = `

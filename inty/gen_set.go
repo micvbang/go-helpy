@@ -64,3 +64,8 @@ func ToSet(vs []int) Set {
 
 	return m
 }
+
+// MakeSet returns a lookup map for int
+func MakeSet(vs ...int) Set {
+	return ToSet(vs)
+}

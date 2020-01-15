@@ -64,3 +64,8 @@ func ToSet(vs []string) Set {
 
 	return m
 }
+
+// MakeSet returns a lookup map for string
+func MakeSet(vs ...string) Set {
+	return ToSet(vs)
+}

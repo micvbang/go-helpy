@@ -21,47 +21,47 @@ func TestWalk(t *testing.T) {
 		"dirs": {
 			root:   makeTestFiles(t, []node{d("dir1"), d("dir2")}),
 			c:      filepathy.WalkConfig{Dirs: true},
-			result: stringy.ToSet([]string{"dir1", "dir2"}),
+			result: stringy.MakeSet("dir1", "dir2"),
 		},
 		"dirs, recursive": {
 			root:   makeTestFiles(t, []node{d("dir1/dir2/dir3")}),
 			c:      filepathy.WalkConfig{Dirs: true, Recursive: true},
-			result: stringy.ToSet([]string{"dir1", "dir1/dir2", "dir1/dir2/dir3"}),
+			result: stringy.MakeSet("dir1", "dir1/dir2", "dir1/dir2/dir3"),
 		},
 		"files": {
 			root:   makeTestFiles(t, []node{f("file1"), f("file2"), f("file3")}),
 			c:      filepathy.WalkConfig{Files: true},
-			result: stringy.ToSet([]string{"file1", "file2", "file3"}),
+			result: stringy.MakeSet("file1", "file2", "file3"),
 		},
 		"files, recursive": {
 			root:   makeTestFiles(t, []node{f("file1"), f("dir1/file2"), f("dir1/dir2/file3")}),
 			c:      filepathy.WalkConfig{Files: true, Recursive: true},
-			result: stringy.ToSet([]string{"file1", "dir1/file2", "dir1/dir2/file3"}),
+			result: stringy.MakeSet("file1", "dir1/file2", "dir1/dir2/file3"),
 		},
 		"files, ext": {
 			root:   makeTestFiles(t, []node{f("file1.yes"), f("file2.no"), f("file3.yay")}),
 			c:      filepathy.WalkConfig{Files: true, Recursive: true, Extensions: []string{".yes", ".yay", ".horse"}},
-			result: stringy.ToSet([]string{"file1.yes", "file3.yay"}),
+			result: stringy.MakeSet("file1.yes", "file3.yay"),
 		},
 		"files, ext, recursive": {
 			root:   makeTestFiles(t, []node{f("file1.no"), f("dir1/file2.yes"), f("dir1/file3.no"), f("dir1/dir2/file4.yay")}),
 			c:      filepathy.WalkConfig{Files: true, Recursive: true, Extensions: []string{".yes", ".yay"}},
-			result: stringy.ToSet([]string{"dir1/file2.yes", "dir1/dir2/file4.yay"}),
+			result: stringy.MakeSet("dir1/file2.yes", "dir1/dir2/file4.yay"),
 		},
 		"files, dirs": {
 			root:   makeTestFiles(t, []node{f("file1"), d("dir1")}),
 			c:      filepathy.WalkConfig{Files: true, Dirs: true},
-			result: stringy.ToSet([]string{"file1", "dir1"}),
+			result: stringy.MakeSet("file1", "dir1"),
 		},
 		"files, dirs, extensions": {
 			root:   makeTestFiles(t, []node{f("file1.yes"), d("dir1.no")}),
 			c:      filepathy.WalkConfig{Files: true, Dirs: true, Extensions: []string{".yes"}},
-			result: stringy.ToSet([]string{"file1.yes", "dir1.no"}),
+			result: stringy.MakeSet("file1.yes", "dir1.no"),
 		},
 		"files, dirs, extensions, recursive": {
 			root:   makeTestFiles(t, []node{f("file1.yes"), f("dir1/file2.sup"), d("dir2/dir3")}),
 			c:      filepathy.WalkConfig{Files: true, Dirs: true, Recursive: true, Extensions: []string{".yes", ".sup"}},
-			result: stringy.ToSet([]string{"file1.yes", "dir1", "dir1/file2.sup", "dir2", "dir2/dir3"}),
+			result: stringy.MakeSet("file1.yes", "dir1", "dir1/file2.sup", "dir2", "dir2/dir3"),
 		},
 	}
 
