@@ -21,7 +21,7 @@ func TestDurationAbs(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			require.Equal(t, DurationAbs(test.d), test.expectedAbs)
+			require.Equal(t, test.expectedAbs, DurationAbs(test.d))
 		})
 	}
 }
