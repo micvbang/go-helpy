@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"io"
-	"strings"
 	"text/template"
 
 	"github.com/micvbang/go-helpy/gen"
@@ -25,10 +24,7 @@ func main() {
 		return abs.Execute(w, d)
 	})
 
-	funcMap := template.FuncMap{
-		"HasPrefix": strings.HasPrefix,
-	}
-	absTest := template.Must(template.New("abs").Funcs(funcMap).Parse(absTemplateTest))
+	absTest := template.Must(template.New("abs").Parse(absTemplateTest))
 	gen.GenerateToPackage(d.PackageName, "gen_abs_test.go", func(w io.Writer) error {
 		return absTest.Execute(w, d)
 	})
