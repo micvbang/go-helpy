@@ -1,9 +1,9 @@
-package booly
+package booly_test
 
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
+	"github.com/micvbang/go-helpy/booly"
 )
 
 func TestToString(t *testing.T) {
@@ -15,7 +15,10 @@ func TestToString(t *testing.T) {
 		{input: false, expected: "false"},
 	}
 	for _, test := range tests {
-		require.Equal(t, test.expected, ToString(test.input))
+		got := booly.ToString(test.input)
+		if got != test.expected {
+			t.Errorf("expected %v, got %v", test.expected, got)
+		}
 	}
 }
 
@@ -47,6 +50,9 @@ func TestFromString(t *testing.T) {
 		{input: "no", expected: false},
 	}
 	for _, test := range tests {
-		require.Equal(t, test.expected, FromString(test.input))
+		got := booly.FromString(test.input)
+		if got != test.expected {
+			t.Errorf("expected %v, got %v", test.expected, got)
+		}
 	}
 }
