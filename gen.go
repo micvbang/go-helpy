@@ -1,6 +1,4 @@
-package main
-
-func main() {}
+package helpy
 
 // int8
 //go:generate go run gen/pointer/pointer.go -type int8 -package-name int8y
