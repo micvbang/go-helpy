@@ -108,7 +108,6 @@ package helpy
 // float32
 //go:generate go run gen/pointer/pointer.go -type float32 -package-name float32y
 //go:generate go run gen/unique/unique.go -type float32 -package-name float32y
-//go:generate go run gen/minmax_number/minmax.go -type float32 -package-name float32y
 //go:generate go run gen/contains/contains.go -type float32 -package-name float32y
 //go:generate go run gen/set/set.go -type float32 -package-name float32y
 //go:generate go run gen/rand_float/rand.go -type float32 -package-name float32y
@@ -117,7 +116,6 @@ package helpy
 // float64
 //go:generate go run gen/pointer/pointer.go -type float64 -package-name float64y
 //go:generate go run gen/unique/unique.go -type float64 -package-name float64y
-//go:generate go run gen/minmax_number/minmax.go -type float64 -package-name float64y
 //go:generate go run gen/contains/contains.go -type float64 -package-name float64y
 //go:generate go run gen/set/set.go -type float64 -package-name float64y
 //go:generate go run gen/rand_float/rand.go -type float64 -package-name float64y
