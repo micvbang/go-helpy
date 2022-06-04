@@ -1,18 +1,13 @@
 package uint8y
 
+import (
+	"github.com/micvbang/go-helpy/slicey"
+)
+
 // Code generated. DO NOT EDIT.
 
 // Unique returns a new list containing unique uint8s from the given input
+// NOTE: this function is deprecated. Use slicey.Unique instead.
 func Unique(vs []uint8) []uint8 {
-	output := make([]uint8, 0, len(vs))
-	seen := make(map[uint8]struct{}, len(vs))
-
-	for _, v := range vs {
-		if _, exists := seen[v]; !exists {
-			seen[v] = struct{}{}
-			output = append(output, v)
-		}
-	}
-
-	return output
+	return slicey.Unique(vs)
 }
