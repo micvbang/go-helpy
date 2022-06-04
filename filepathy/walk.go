@@ -4,7 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/micvbang/go-helpy/stringy"
+	"github.com/micvbang/go-helpy"
 )
 
 // WalkConfig controls when walkFn is called by Walk.
@@ -39,7 +39,7 @@ func Walk(root string, c WalkConfig, walkFn func(path string, info os.FileInfo, 
 		return err
 	}
 
-	extensionSet := stringy.ToSet(c.Extensions)
+	extensionSet := helpy.ToSet(c.Extensions)
 
 	return filepath.Walk(abs, func(path string, info os.FileInfo, err error) error {
 		if path == abs {
