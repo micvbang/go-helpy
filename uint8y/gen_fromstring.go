@@ -11,3 +11,14 @@ func FromString(s string) (uint8, error) {
 
 	return uint8(v), err
 }
+
+// FromStringOrDefault parses s and returns a uint8.
+func FromStringOrDefault(s string, defaultVal uint8) uint8 {
+
+	v, err := strconv.ParseUint(s, 10, 8)
+
+	if err != nil {
+		return defaultVal
+	}
+	return uint8(v)
+}

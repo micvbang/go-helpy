@@ -59,15 +59,28 @@ func FromString(s string) ({{.Type}}, error) {
 	{{end}}
 	return {{.Type}}(v), err
 }
+
+// FromStringOrDefault parses s and returns a {{.Type}}.
+func FromStringOrDefault(s string, defaultVal {{.Type}}) {{.Type}} {
+	{{if (HasPrefix .Type "int") }}
+		v, err := strconv.ParseInt(s, 10, {{.BitSize}})
+	{{else}}
+		v, err := strconv.ParseUint(s, 10, {{.BitSize}})
+	{{end}}
+	if err != nil {
+		return defaultVal
+	}
+	return {{.Type}}(v)
+}
 `
 
 const absTemplateTest = `
-package {{.PackageName}}
+package {{.PackageName}}_test
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/require"
+	
+	"github.com/micvbang/go-helpy/{{.PackageName}}"
 )
 
 // Code generated. DO NOT EDIT.
@@ -82,11 +95,37 @@ func TestFromString(t *testing.T) {
 		{{if (HasPrefix .Type "int") }}"negative": {input: "-123", expected: -123}, {{end}}
 	}
 
-	for name, tc := range tests {
+	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			v, err := FromString(tc.input)
-			require.NoError(t, err)
-			require.Equal(t, tc.expected, v)
+			v, err := {{.PackageName}}.FromString(test.input)
+			if err != nil {
+				t.Errorf("expected no error, got %v", err)
+			}
+			if v != test.expected {
+				t.Errorf("expected %v, got %v", test.expected, v)
+			}
+		})
+    }	
+}
+
+func TestFromStringOrDefault(t *testing.T) {
+	tests := map[string]struct {
+		input string
+		defaultVal {{.Type}}
+		expected {{.Type}}
+	}{
+		"positive": {input: "42", expected: 42},
+		"zero": {input: "0", expected: 0},
+		"default": {input: "sdf", defaultVal: 42, expected: 42},
+		{{if (HasPrefix .Type "int") }}"negative": {input: "-123", expected: -123}, {{end}}
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			v := {{.PackageName}}.FromStringOrDefault(test.input, test.defaultVal)
+			if v != test.expected {
+				t.Errorf("expected %v, got %v", test.expected, v)
+			}
 		})
     }	
 }
