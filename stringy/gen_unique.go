@@ -1,18 +1,13 @@
 package stringy
 
+import (
+	"github.com/micvbang/go-helpy/slicey"
+)
+
 // Code generated. DO NOT EDIT.
 
 // Unique returns a new list containing unique strings from the given input
+// NOTE: this function is deprecated. Use slicey.Unique instead.
 func Unique(vs []string) []string {
-	output := make([]string, 0, len(vs))
-	seen := make(map[string]struct{}, len(vs))
-
-	for _, v := range vs {
-		if _, exists := seen[v]; !exists {
-			seen[v] = struct{}{}
-			output = append(output, v)
-		}
-	}
-
-	return output
+	return slicey.Unique(vs)
 }

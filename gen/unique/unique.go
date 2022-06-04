@@ -34,56 +34,31 @@ func main() {
 const uniqueTemplate = `
 package {{.PackageName}}
 
+import (
+	"github.com/micvbang/go-helpy/slicey"
+)
+
 // Code generated. DO NOT EDIT.
 
 // Unique returns a new list containing unique {{.Type}}s from the given input
+// NOTE: this function is deprecated. Use slicey.Unique instead.
 func Unique(vs []{{.Type}}) []{{.Type}} {
-	output := make([]{{.Type}}, 0, len(vs))
-	seen := make(map[{{.Type}}]struct{}, len(vs))
-
-	for _, v := range vs {
-		if _, exists := seen[v]; !exists {
-			seen[v] = struct{}{}
-			output = append(output, v)
-		}
-	}
-
-	return output
+	return slicey.Unique(vs)
 }
 `
 
 const uniqueTemplateTest = `
-package {{.PackageName}}
+package {{.PackageName}}_test
 
 import (
 	"testing"
 	"fmt"
 
-	"github.com/stretchr/testify/require"
+	"github.com/micvbang/go-helpy/slicey"
+	"github.com/micvbang/go-helpy/{{.PackageName}}"
 )
 
 // Code generated. DO NOT EDIT.
-
-func UniqueGenerateTestCase(n int) (test []{{.Type}}, expected []{{.Type}}) {
-	// This test generator is somewhat silly, in that it implements
-	// Unique internally..
-
-	test = make([]{{.Type}}, n)
-	expected = make([]{{.Type}}, 0, n)
-	seen := make(map[{{.Type}}]struct{})
-
-	for i := 0; i < n; i++ {
-		v := RandomN(50)
-		test[i] = v
-
-		if _, ok := seen[v]; !ok{
-			seen[v] = struct{}{}
-			expected = append(expected,  v)
-		}
-	}
-
-	return test, expected
-}
 
 func TestUnique(t *testing.T) {
 	const numTestCases = 50
@@ -100,10 +75,34 @@ func TestUnique(t *testing.T) {
 		tests[i] = test
 	}
 
-	for i, tc := range tests {
+	for i, test := range tests {
 		t.Run(fmt.Sprintf("Test case %d", i), func(t *testing.T) {
-			require.Equal(t, tc.expected, Unique(tc.input))
+			got := {{.PackageName}}.Unique(test.input)
+			if !slicey.Equal(test.expected, got) {
+				t.Errorf("expected %v, got %v", test.expected, got)
+			}
 		})
     }	
+}
+
+func UniqueGenerateTestCase(n int) (test []{{.Type}}, expected []{{.Type}}) {
+	// This test generator is somewhat silly, in that it implements
+	// Unique internally..
+
+	test = make([]{{.Type}}, n)
+	expected = make([]{{.Type}}, 0, n)
+	seen := make(map[{{.Type}}]struct{})
+
+	for i := 0; i < n; i++ {
+		v := {{.PackageName}}.RandomN(50)
+		test[i] = v
+
+		if _, ok := seen[v]; !ok{
+			seen[v] = struct{}{}
+			expected = append(expected,  v)
+		}
+	}
+
+	return test, expected
 }
 `

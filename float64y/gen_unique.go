@@ -1,18 +1,13 @@
 package float64y
 
+import (
+	"github.com/micvbang/go-helpy/slicey"
+)
+
 // Code generated. DO NOT EDIT.
 
 // Unique returns a new list containing unique float64s from the given input
+// NOTE: this function is deprecated. Use slicey.Unique instead.
 func Unique(vs []float64) []float64 {
-	output := make([]float64, 0, len(vs))
-	seen := make(map[float64]struct{}, len(vs))
-
-	for _, v := range vs {
-		if _, exists := seen[v]; !exists {
-			seen[v] = struct{}{}
-			output = append(output, v)
-		}
-	}
-
-	return output
+	return slicey.Unique(vs)
 }

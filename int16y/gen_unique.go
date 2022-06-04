@@ -1,18 +1,13 @@
 package int16y
 
+import (
+	"github.com/micvbang/go-helpy/slicey"
+)
+
 // Code generated. DO NOT EDIT.
 
 // Unique returns a new list containing unique int16s from the given input
+// NOTE: this function is deprecated. Use slicey.Unique instead.
 func Unique(vs []int16) []int16 {
-	output := make([]int16, 0, len(vs))
-	seen := make(map[int16]struct{}, len(vs))
-
-	for _, v := range vs {
-		if _, exists := seen[v]; !exists {
-			seen[v] = struct{}{}
-			output = append(output, v)
-		}
-	}
-
-	return output
+	return slicey.Unique(vs)
 }
