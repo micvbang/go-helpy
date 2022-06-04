@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/micvbang/go-helpy"
-	"github.com/stretchr/testify/require"
 )
 
 // TestMax verifies that Max returns the largest value from the given input.
@@ -24,10 +23,13 @@ func TestMax(t *testing.T) {
 		"10 arguments negative": {input: []int32{17, 25, -1, 0, -101, 127, 42, -13, 37, 69}, expected: 127},
 	}
 
-	for name, tc := range tests {
+	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			v, vs := tc.input[0], tc.input[1:len(tc.input)]
-			require.Equal(t, tc.expected, helpy.Max(v, vs...))
+			v, vs := test.input[0], test.input[1:len(test.input)]
+			got := helpy.Max(v, vs...)
+			if got != test.expected {
+				t.Errorf("expected %v, got %v", test.expected, got)
+			}
 		})
 	}
 }
