@@ -3,8 +3,10 @@ package main
 import (
 	"flag"
 	"io"
-	"strings"
 	"text/template"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 
 	"github.com/micvbang/go-helpy/gen"
 )
@@ -25,7 +27,7 @@ func main() {
 	flag.Parse()
 
 	funcMap := template.FuncMap{
-		"Title": strings.Title,
+		"Title": cases.Title(language.English).String,
 	}
 
 	t := template.Must(template.New("pointer").Funcs(funcMap).Parse(pointerTemplate))
