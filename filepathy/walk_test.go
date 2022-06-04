@@ -1,7 +1,6 @@
 package filepathy_test
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -9,7 +8,6 @@ import (
 
 	"github.com/micvbang/go-helpy/filepathy"
 	"github.com/micvbang/go-helpy/stringy"
-	"github.com/stretchr/testify/require"
 )
 
 func TestWalk(t *testing.T) {
@@ -75,13 +73,19 @@ func TestWalk(t *testing.T) {
 				return nil
 			})
 
-			require.Equal(t, len(test.result), len(paths), "unexpected length")
+			if len(test.result) != len(paths) {
+				t.Errorf("expected %v files, got %v", len(test.result), len(paths))
+			}
 
 			for _, p := range paths {
 				relPath, err := filepath.Rel(test.root, p)
-				require.NoError(t, err)
+				if err != nil {
+					t.Errorf("unexpected error: %v", err)
+				}
 
-				require.True(t, test.result.Contains(relPath), fmt.Sprintf("expected %s", p))
+				if !test.result.Contains(relPath) {
+					t.Errorf("expected %v to be found", p)
+				}
 			}
 		})
 	}
@@ -115,20 +119,29 @@ type node struct {
 // the file "3" on path "1/2/3".
 func makeTestFiles(t *testing.T, nodes []node) (root string) {
 	dir, err := ioutil.TempDir("", "")
-	require.NoError(t, err)
+	if err != nil {
+		t.Fatalf("unexpected error when creating tempdir: %v", err)
+	}
 
 	for _, node := range nodes {
 		path := filepath.Join(dir, node.name)
 		dir := filepath.Dir(path)
 
 		err := os.MkdirAll(dir, 0755)
-		require.NoError(t, err, "failed to make dirs")
+		if err != nil {
+			t.Fatalf("unexpected error when making dir %v: %v", dir, err)
+		}
+
 		if node.isDir {
 			err := os.Mkdir(path, 0755)
-			require.NoError(t, err, "failed to create dir")
+			if err != nil {
+				t.Fatalf("unexpected error when making dir %v: %v", path, err)
+			}
 		} else {
 			_, err := os.OpenFile(path, os.O_CREATE, 0644)
-			require.NoError(t, err, "failed to create file")
+			if err != nil {
+				t.Fatalf("unexpected error when making file %v: %v", path, err)
+			}
 		}
 	}
 
