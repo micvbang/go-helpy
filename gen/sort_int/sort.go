@@ -1,10 +1,12 @@
 package main
 
 import (
-	"strings"
 	"flag"
 	"io"
 	"text/template"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 
 	"github.com/micvbang/go-helpy/gen"
 )
@@ -21,7 +23,7 @@ func main() {
 	flag.Parse()
 
 	funcMap := template.FuncMap{
-		"Title": strings.Title,
+		"Title": cases.Title(language.English).String,
 	}
 	sort := template.Must(template.New("template").Funcs(funcMap).Parse(sortTemplate))
 	gen.GenerateToPackage(d.PackageName, "gen_sort.go", func(w io.Writer) error {
