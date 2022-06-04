@@ -55,8 +55,6 @@ package {{.PackageName}}
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 // Code generated. DO NOT EDIT.
@@ -71,8 +69,11 @@ func TestRandom(t *testing.T) {
 // TestRandomN runs RandomN and ensures that output is within expected range.
 func TestRandomN(t *testing.T) {
 	for i := 1; i < 10000; i++ {
-		n := RandomN({{.Type}}(i)) 
-		require.True(t, 0 <= n && n < {{.Type}}(i))
+		v := {{.Type}}(i)
+		got := RandomN(v) 
+		if got < 0 || got >= v {
+			t.Errorf("random number outside expected range [0;%v[", v)
+		}
 	}
 }
 `
