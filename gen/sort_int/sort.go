@@ -4,11 +4,10 @@ import (
 	"flag"
 	"io"
 	"text/template"
-
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
+	"unicode"
 
 	"github.com/micvbang/go-helpy/gen"
+	"github.com/micvbang/go-helpy/internal/stringsy"
 )
 
 type templateData struct {
@@ -23,7 +22,9 @@ func main() {
 	flag.Parse()
 
 	funcMap := template.FuncMap{
-		"Title": cases.Title(language.English).String,
+		"Title": func(s string) string {
+			return stringsy.TitleCasing(s, unicode.ToUpper)
+		},
 	}
 	sort := template.Must(template.New("template").Funcs(funcMap).Parse(sortTemplate))
 	gen.GenerateToPackage(d.PackageName, "gen_sort.go", func(w io.Writer) error {
