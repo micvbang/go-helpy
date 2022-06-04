@@ -1,71 +1,40 @@
 package int32y
 
+import "github.com/micvbang/go-helpy"
+
 // Code generated. DO NOT EDIT.
 
-type Set map[int32]struct{}
+// NOTE: this type is deprecated. Use helpy.Set instead
+type Set helpy.Set[int32]
 
-// Contains returns true if Set contains v.
-func (s Set) Contains(v int32) bool {
-	_, exists := s[v]
-	return exists
+func (s Set) t() helpy.Set[int32] {
+	return helpy.Set[int32](s)
 }
 
-// Intersect returns the intersection of two Sets.
 func (s Set) Intersect(s2 Set) Set {
-	short, long := s, s2
-	if len(s2) < len(s) {
-		short, long = s2, s
-	}
-
-	m := make(map[int32]struct{}, len(short))
-	for k := range short {
-		if _, exists := long[k]; exists {
-			m[k] = struct{}{}
-		}
-	}
-	return m
+	return Set(s.t().Intersect(s2.t()))
 }
 
-// Union returns the union of two Sets.
 func (s Set) Union(s2 Set) Set {
-	m := make(map[int32]struct{}, len(s)+len(s2))
-	for k := range s {
-		m[k] = struct{}{}
-	}
-
-	for k := range s2 {
-		m[k] = struct{}{}
-	}
-
-	return m
+	return Set(s.t().Union(s2.t()))
 }
 
-// Equal checks whether all
+func (s Set) Contains(v int32) bool {
+	return s.t().Contains(v)
+}
+
 func (s Set) Equal(s2 Set) bool {
-	if len(s) != len(s2) {
-		return false
-	}
-
-	for v := range s {
-		if _, ok := s2[v]; !ok {
-			return false
-		}
-	}
-
-	return true
+	return s.t().Equal(s2.t())
 }
 
 // ToSet returns a lookup map for int32.
+// NOTE: this function is deprecated. Use helpy.ToSet instead.
 func ToSet(vs []int32) Set {
-	m := make(map[int32]struct{})
-	for _, v := range vs {
-		m[v] = struct{}{}
-	}
-
-	return m
+	return Set(helpy.ToSet(vs))
 }
 
 // MakeSet returns a lookup map for int32
+// NOTE: this function is deprecated. Use helpy.MakeSet instead.
 func MakeSet(vs ...int32) Set {
-	return ToSet(vs)
+	return Set(helpy.ToSet(vs))
 }
