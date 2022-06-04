@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"io"
+	"strings"
 	"text/template"
 
 	"github.com/micvbang/go-helpy/gen"
@@ -24,7 +25,10 @@ func main() {
 		return random.Execute(w, d)
 	})
 
-	randomTest := template.Must(template.New("template").Parse(randomTemplateTest))
+	funcMap := template.FuncMap{
+		"HasPrefix": strings.HasPrefix,
+	}
+	randomTest := template.Must(template.New("template").Funcs(funcMap).Parse(randomTemplateTest))
 	gen.GenerateToPackage(d.PackageName, "gen_random_test.go", func(w io.Writer) error {
 		return randomTest.Execute(w, d)
 	})
@@ -55,8 +59,6 @@ package {{.PackageName}}
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 // Code generated. DO NOT EDIT.
@@ -71,8 +73,16 @@ func TestRandom(t *testing.T) {
 // TestRandomN runs RandomN and ensures that output is within expected range.
 func TestRandomN(t *testing.T) {
 	for i := 1; i < 127; i++ {
-		n := RandomN({{.Type}}(i)) 
-		require.True(t, 0 <= n && n < {{.Type}}(i))
+		v := {{.Type}}(i)
+		got := RandomN(v) 
+		if got >= v {
+			t.Errorf("expected value < %v, got %v", v, got)
+		}
+		{{if (HasPrefix .Type "int") }}
+			if got >= v {
+				t.Errorf("expected value > 0, got %v", got)
+			}
+		{{end}}
 	}
 }
 `
