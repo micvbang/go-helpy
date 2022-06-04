@@ -8,7 +8,7 @@ import (
 	"text/template"
 
 	"github.com/micvbang/go-helpy/gen"
-	"github.com/micvbang/go-helpy/inty"
+	"github.com/micvbang/go-helpy/slicey"
 )
 
 type templateData struct {
@@ -25,7 +25,7 @@ func main() {
 	flag.Parse()
 
 	validBitSizes := []int{8, 16, 32, 64}
-	if !inty.Contains(validBitSizes, d.BitSize) {
+	if !slicey.Contains(validBitSizes, d.BitSize) {
 		log.Fatalf("Bit size was '%d', but must be one of %v", d.BitSize, validBitSizes)
 	}
 

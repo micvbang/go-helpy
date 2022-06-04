@@ -1,53 +1,4 @@
-package main
-
-import (
-	"flag"
-	"io"
-	"text/template"
-
-	"github.com/micvbang/go-helpy/gen"
-)
-
-type templateData struct {
-	Type        string
-	TypeName    string
-	PackageName string
-}
-
-func main() {
-	var d templateData
-	flag.StringVar(&d.Type, "type", "", "The subtype used for the queue being generated")
-	flag.StringVar(&d.PackageName, "package-name", "", "The name used for the queue being generated. This should start with a capital letter so that it is exported.")
-	flag.Parse()
-
-	contains := template.Must(template.New("template").Parse(containsTemplate))
-
-	gen.GenerateToPackage(d.PackageName, "gen_contains.go", func(w io.Writer) error {
-		return contains.Execute(w, d)
-	})
-
-	containsTest := template.Must(template.New("abs").Parse(containsTemplateTest))
-	gen.GenerateToPackage(d.PackageName, "gen_contains_test.go", func(w io.Writer) error {
-		return containsTest.Execute(w, d)
-	})
-}
-
-const containsTemplate = `
-package {{.PackageName}}
-
-// Code generated. DO NOT EDIT.
-
-import "github.com/micvbang/go-helpy/slicey"
-
-// Contains returns true if vs contains v.
-// NOTE: this function is deprecated. Use slicey.Contains instead.
-func Contains(vs []{{.Type}}, v {{.Type}}) bool {
-	return slicey.Contains(vs, v)
-}
-`
-
-const containsTemplateTest = `
-package {{.PackageName}}_test
+package inty_test
 
 import (
 	"testing"
@@ -112,4 +63,3 @@ func TestContains(t *testing.T) {
 		})
 	}
 }
-`
