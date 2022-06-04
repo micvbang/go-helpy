@@ -1,25 +1,19 @@
 package uint8y
 
+import (
+	"github.com/micvbang/go-helpy"
+)
+
 // Code generated. DO NOT EDIT.
 
 // Pointer returns a pointer to the given uint8.
+// NOTE: this method is deprecated. Use helpy.Pointer instead.
 func Pointer(v uint8) *uint8 {
-	return &v
-}
-
-// Uint8 dereferences and returns uint8. The uint8 default value is returned if v is nil.
-func Uint8(v *uint8) uint8 {
-	if v == nil {
-		var dv uint8
-		return dv
-	}
-	return *v
+	return helpy.Pointer(v)
 }
 
 // Uint8OrDefault returns uint8 if it is not nil, and a pointer to defaultVal otherwise.
+// NOTE: this method is deprecated. Use helpy.DerefOrValue instead.
 func Uint8OrDefault(v *uint8, defaultVal uint8) *uint8 {
-	if v == nil {
-		return &defaultVal
-	}
-	return v
+	return helpy.DerefOrValue(v, defaultVal)
 }

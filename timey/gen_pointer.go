@@ -1,29 +1,21 @@
 package timey
 
 import (
+	"github.com/micvbang/go-helpy"
+
 	"time"
 )
 
 // Code generated. DO NOT EDIT.
 
 // Pointer returns a pointer to the given time.Time.
+// NOTE: this method is deprecated. Use helpy.Pointer instead.
 func Pointer(v time.Time) *time.Time {
-	return &v
-}
-
-// Time dereferences and returns time.Time. The time.Time default value is returned if v is nil.
-func Time(v *time.Time) time.Time {
-	if v == nil {
-		var dv time.Time
-		return dv
-	}
-	return *v
+	return helpy.Pointer(v)
 }
 
 // TimeOrDefault returns time.Time if it is not nil, and a pointer to defaultVal otherwise.
+// NOTE: this method is deprecated. Use helpy.DerefOrValue instead.
 func TimeOrDefault(v *time.Time, defaultVal time.Time) *time.Time {
-	if v == nil {
-		return &defaultVal
-	}
-	return v
+	return helpy.DerefOrValue(v, defaultVal)
 }
