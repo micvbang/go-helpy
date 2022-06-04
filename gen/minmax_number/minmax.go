@@ -37,39 +37,31 @@ func main() {
 const minMaxTemplate = `
 package {{.PackageName}}
 
+import "github.com/micvbang/go-helpy"
+
 // Code generated. DO NOT EDIT.
 
 // Min returns the minimum value from v and vs.
+// NOTE: this method is deprecated. Use helpy.Min instead.
 func Min(v {{.Type}}, vs ...{{.Type}}) {{.Type}} {
-	min := v
-	for _, v := range vs {
-		if v < min {
-			min = v
-		}
-	}
-	return min
+	return helpy.Min(v, vs...)
 }
 
 
 // Max returns the maximum value from v and vs.
+// NOTE: this method is deprecated. Use helpy.Max instead.
 func Max(v {{.Type}}, vs ...{{.Type}}) {{.Type}} {
-	max := v
-	for _, v := range vs {
-		if v > max {
-			max = v
-		}
-	}
-	return max
+	return helpy.Max(v, vs...)
 }
 `
 
 const minMaxTemplateTest = `
-package {{.PackageName}}
+package {{.PackageName}}_test
 
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
+	"github.com/micvbang/go-helpy/{{.PackageName}}"
 )
 
 // Code generated. DO NOT EDIT.
@@ -91,10 +83,41 @@ func TestMin(t *testing.T) {
 		{{end}}
 	}
 
-	for name, tc := range tests {
+	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			v, vs := tc.input[0], tc.input[1:len(tc.input)]
-			require.Equal(t, tc.expected, Min(v, vs...))
+			v, vs := test.input[0], test.input[1:len(test.input)]
+			got := {{.PackageName}}.Min(v, vs...)
+			if got != test.expected {
+				t.Errorf("expected %v, got %v", test.expected, got)
+			}
+		})
+    }	
+}
+
+func TestMax(t *testing.T) {
+	tests := map[string]struct {
+		input []{{.Type}}
+		expected {{.Type}}
+	}{
+		"in order": {input: []{{.Type}}{1, 2}, expected: 2},
+		"reverse order": {input: []{{.Type}}{5, 2}, expected: 5},
+		"3 arguments": {input: []{{.Type}}{10, 5, 15}, expected: 15},
+		"4 arguments": {input: []{{.Type}}{1, 122, 100}, expected: 122},
+		"10 arguments": {input: []{{.Type}}{17, 25, 1, 0, 101, 125, 42, 13, 37, 69}, expected: 125},
+		{{if (HasPrefix .Type "int") }}
+		"one negative": {input: []{{.Type}}{-5, 10}, expected: 10},
+		"both negative": {input: []{{.Type}}{-5, -100}, expected: -5},
+		"10 arguments negative": {input: []{{.Type}}{17, 25, -1, 0, -101, 127, 42, -13, 37, 69}, expected: 127},
+		{{end}}
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			v, vs := test.input[0], test.input[1:len(test.input)]
+			got := {{.PackageName}}.Max(v, vs...)
+			if got != test.expected {
+				t.Errorf("expected %v, got %v", test.expected, got)
+			}
 		})
     }	
 }
