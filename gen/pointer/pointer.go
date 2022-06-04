@@ -38,33 +38,25 @@ func main() {
 const pointerTemplate = `
 package {{.PackageName}}
 
-{{if .Import}}
 import (
-	"{{.Import}}"
+	"github.com/micvbang/go-helpy"
+	{{if .Import}}
+		"{{.Import}}"
+	{{end}}
+
 )
-{{end}}
 
 // Code generated. DO NOT EDIT.
 
 // Pointer returns a pointer to the given {{.Type}}.
+// NOTE: this method is deprecated. Use helpy.Pointer instead.
 func Pointer(v {{.Type}}) *{{.Type}} {
-	return &v
-}
-
-// {{if .TypeName}}{{.TypeName}}{{else}}{{.Type | Title}}{{end}} dereferences and returns {{.Type}}. The {{.Type}} default value is returned if v is nil.
-func {{if .TypeName}}{{.TypeName}}{{else}}{{.Type | Title}}{{end}}(v *{{.Type}}) {{.Type}} {
-	if v == nil {
-		var dv {{.Type}}
-		return dv
-	}
-	return *v
+	return helpy.Pointer(v)
 }
 
 // {{if .TypeName}}{{.TypeName}}{{else}}{{.Type | Title}}{{end}}OrDefault returns {{.Type}} if it is not nil, and a pointer to defaultVal otherwise.
+// NOTE: this method is deprecated. Use helpy.DerefOrValue instead.
 func {{if .TypeName}}{{.TypeName}}{{else}}{{.Type | Title}}{{end}}OrDefault(v *{{.Type}}, defaultVal {{.Type}}) *{{.Type}} {
-	if v == nil {
-		return &defaultVal
-	}
-	return v
+	return helpy.DerefOrValue(v, defaultVal)
 }
 `

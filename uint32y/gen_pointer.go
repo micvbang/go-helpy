@@ -1,25 +1,19 @@
 package uint32y
 
+import (
+	"github.com/micvbang/go-helpy"
+)
+
 // Code generated. DO NOT EDIT.
 
 // Pointer returns a pointer to the given uint32.
+// NOTE: this method is deprecated. Use helpy.Pointer instead.
 func Pointer(v uint32) *uint32 {
-	return &v
-}
-
-// Uint32 dereferences and returns uint32. The uint32 default value is returned if v is nil.
-func Uint32(v *uint32) uint32 {
-	if v == nil {
-		var dv uint32
-		return dv
-	}
-	return *v
+	return helpy.Pointer(v)
 }
 
 // Uint32OrDefault returns uint32 if it is not nil, and a pointer to defaultVal otherwise.
+// NOTE: this method is deprecated. Use helpy.DerefOrValue instead.
 func Uint32OrDefault(v *uint32, defaultVal uint32) *uint32 {
-	if v == nil {
-		return &defaultVal
-	}
-	return v
+	return helpy.DerefOrValue(v, defaultVal)
 }

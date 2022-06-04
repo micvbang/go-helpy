@@ -1,25 +1,19 @@
 package uinty
 
+import (
+	"github.com/micvbang/go-helpy"
+)
+
 // Code generated. DO NOT EDIT.
 
 // Pointer returns a pointer to the given uint.
+// NOTE: this method is deprecated. Use helpy.Pointer instead.
 func Pointer(v uint) *uint {
-	return &v
-}
-
-// Uint dereferences and returns uint. The uint default value is returned if v is nil.
-func Uint(v *uint) uint {
-	if v == nil {
-		var dv uint
-		return dv
-	}
-	return *v
+	return helpy.Pointer(v)
 }
 
 // UintOrDefault returns uint if it is not nil, and a pointer to defaultVal otherwise.
+// NOTE: this method is deprecated. Use helpy.DerefOrValue instead.
 func UintOrDefault(v *uint, defaultVal uint) *uint {
-	if v == nil {
-		return &defaultVal
-	}
-	return v
+	return helpy.DerefOrValue(v, defaultVal)
 }
