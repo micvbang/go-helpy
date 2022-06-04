@@ -2,8 +2,6 @@ package int64y
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 // Code generated. DO NOT EDIT.
@@ -36,16 +34,24 @@ func TestSetIntersect(t *testing.T) {
 		},
 	}
 
-	for name, tc := range tests {
+	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			s1Len := len(tc.s1)
-			s2Len := len(tc.s2)
+			s1Len := len(test.s1)
+			s2Len := len(test.s2)
 
-			require.True(t, tc.s1.Intersect(tc.s2).Equal(tc.expected))
+			got := test.s1.Intersect(test.s2)
+			if !got.Equal(test.expected) {
+				t.Errorf("expected %v, got %v", test.expected, got)
+			}
 
 			// Ensure original sets weren't modified
-			require.Equal(t, len(tc.s1), s1Len)
-			require.Equal(t, len(tc.s2), s2Len)
+			if len(test.s1) != s1Len {
+				t.Errorf("expected set to be of size %v, got %v", s1Len, test.s1)
+			}
+
+			if len(test.s2) != s2Len {
+				t.Errorf("expected set to be of size %v, got %v", s2Len, test.s2)
+			}
 		})
 	}
 }
@@ -78,16 +84,24 @@ func TestSetUnion(t *testing.T) {
 		},
 	}
 
-	for name, tc := range tests {
+	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			s1Len := len(tc.s1)
-			s2Len := len(tc.s2)
+			s1Len := len(test.s1)
+			s2Len := len(test.s2)
 
-			require.True(t, tc.s1.Union(tc.s2).Equal(tc.expected))
+			got := test.s1.Union(test.s2)
+			if !got.Equal(test.expected) {
+				t.Errorf("expected %v, got %v", test.expected, got)
+			}
 
 			// Ensure original sets weren't modified
-			require.Equal(t, len(tc.s1), s1Len)
-			require.Equal(t, len(tc.s2), s2Len)
+			if len(test.s1) != s1Len {
+				t.Errorf("expected set to be of size %v, got %v", s1Len, test.s1)
+			}
+
+			if len(test.s2) != s2Len {
+				t.Errorf("expected set to be of size %v, got %v", s2Len, test.s2)
+			}
 		})
 	}
 }
