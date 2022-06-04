@@ -1,26 +1,28 @@
-package float64y
+package float64y_test
 
 import (
+	"github.com/micvbang/go-helpy"
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 // Code generated. DO NOT EDIT.
 
 func TestAbs(t *testing.T) {
 	tests := map[string]struct {
-		input    float64
-		expected float64
+		input    int
+		expected int
 	}{
 		"positive": {input: 42, expected: 42},
 		"negative": {input: -123, expected: 123},
 		"zero":     {input: 0, expected: 0},
 	}
 
-	for name, tc := range tests {
+	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			require.Equal(t, tc.expected, Abs(tc.input))
+			got := helpy.Abs(test.input)
+			if got != test.expected {
+				t.Errorf("expected %v, got %v", test.expected, got)
+			}
 		})
 	}
 }

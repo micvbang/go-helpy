@@ -1,11 +1,10 @@
-package int64y_test
+package helpy_test
 
 import (
-	"github.com/micvbang/go-helpy"
 	"testing"
-)
 
-// Code generated. DO NOT EDIT.
+	"github.com/micvbang/go-helpy"
+)
 
 func TestAbs(t *testing.T) {
 	tests := map[string]struct {
