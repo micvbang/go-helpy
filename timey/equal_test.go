@@ -3,8 +3,6 @@ package timey
 import (
 	"testing"
 	"time"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestTruncEqual(t *testing.T) {
@@ -45,7 +43,9 @@ func TestTruncEqual(t *testing.T) {
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
 			got := TruncEqual(test.d, test.t0, test.t1)
-			require.Equal(t, test.expected, got)
+			if test.expected != got {
+				t.Errorf("expected %v, got %v", test.expected, got)
+			}
 		})
 	}
 }
@@ -106,7 +106,9 @@ func TestDiffEqual(t *testing.T) {
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
 			got := DiffEqual(test.d, test.t0, test.t1)
-			require.Equal(t, test.expected, got)
+			if test.expected != got {
+				t.Errorf("expected %v, got %v", test.expected, got)
+			}
 		})
 	}
 }
