@@ -64,7 +64,7 @@ package {{.PackageName}}
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
+	"github.com/micvbang/go-helpy/slicey"
 )
 
 // Code generated. DO NOT EDIT.
@@ -88,9 +88,12 @@ func TestSort(t *testing.T) {
 		},
 	}
 
-	for name, tc := range tests {
+	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			require.Equal(t, tc.expected, Sort(tc.input))
+			got := Sort(test.input)
+			if !slicey.Equal(test.expected, got) {
+				t.Errorf("expected %v, got %v", test.expected, got)
+			}
 		})
     }
 }
