@@ -3,43 +3,41 @@ package mapy_test
 import (
 	"testing"
 
+	"github.com/micvbang/go-helpy"
 	"github.com/micvbang/go-helpy/mapy"
-	"github.com/micvbang/go-helpy/stringy"
 )
 
 func TestKeys(t *testing.T) {
 	tests := map[string]struct {
-		m        map[string]interface{}
-		expected stringy.Set
+		m        map[string]string
+		expected helpy.Set[string]
 		err      error
 	}{
-		"map[string]string": {
-			m: map[string]interface{}{
-				"key1": "val1",
-				"key2": "val2",
-			},
-			expected: stringy.MakeSet("key1", "key2"),
+		"empty": {
+			m:        map[string]string{},
+			expected: helpy.MakeSet[string](),
 		},
-		"map[string]int": {
-			m: map[string]interface{}{
-				"key1": 1,
-				"key2": 2,
+		"one element": {
+			m: map[string]string{
+				"key1": "value",
 			},
-			expected: stringy.MakeSet("key1", "key2"),
+			expected: helpy.MakeSet("key1"),
 		},
 		"map[string]bool": {
-			m: map[string]interface{}{
-				"key1": true,
-				"key2": false,
+			m: map[string]string{
+				"key1": "value",
+				"key2": "value",
+				"key3": "value",
+				"key4": "value",
 			},
-			expected: stringy.MakeSet("key1", "key2"),
+			expected: helpy.MakeSet("key1", "key2", "key3", "key4"),
 		},
 	}
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
 			got := mapy.Keys(test.m)
-			gotSet := stringy.ToSet(got)
+			gotSet := helpy.ToSet(got)
 			if !gotSet.Equal(test.expected) {
 				t.Errorf("expected %v, got %v", test.expected, got)
 			}
