@@ -65,21 +65,26 @@ var (
 	ErrInvalidWhence = errors.New("invalid whence")
 )
 
-func (fb *Buffer) Seek(offset int64, whence int) (int64, error) {
+func (b *Buffer) Seek(offset int64, whence int) (int64, error) {
 	var newOffset int64
 	switch whence {
 	case io.SeekStart:
 		newOffset = offset
 	case io.SeekCurrent:
-		newOffset = fb.offset + offset
+		newOffset = b.offset + offset
 	case io.SeekEnd:
-		newOffset = int64(len(fb.buf)) + offset
+		newOffset = int64(len(b.buf)) + offset
 	default:
 		return 0, fmt.Errorf("whence %d: %w", whence, ErrInvalidWhence)
 	}
-	if newOffset > int64(len(fb.buf)) || newOffset < 0 {
+	if newOffset > int64(len(b.buf)) || newOffset < 0 {
 		return 0, fmt.Errorf("offset %d: %w", offset, ErrOutOfBounds)
 	}
-	fb.offset = newOffset
+	b.offset = newOffset
 	return newOffset, nil
+}
+
+// Close doesn't do anything; it's only here to comply with the Close interface.
+func (b *Buffer) Close() error {
+	return nil
 }
