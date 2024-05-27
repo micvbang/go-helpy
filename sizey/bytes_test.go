@@ -1,6 +1,7 @@
 package sizey_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/micvbang/go-helpy/sizey"
@@ -39,4 +40,37 @@ func pow(v uint64, e int) uint64 {
 		r *= v
 	}
 	return r
+}
+
+func TestFormatBytes(t *testing.T) {
+	tests := []struct {
+		bytes    uint64
+		expected string
+	}{
+		{bytes: 0, expected: "0B"},
+		{bytes: 1, expected: "1B"},
+		{bytes: 512, expected: "512B"},
+		{bytes: 1024, expected: "1KiB"},
+		{bytes: 1025, expected: "1.0KiB"},
+		{bytes: 1536, expected: "1.5KiB"},
+		{bytes: 2047, expected: "2.0KiB"},
+		{bytes: 2048, expected: "2KiB"},
+		{bytes: 43520, expected: "42.5KiB"},
+		{bytes: pow(1024, 0), expected: "1B"},
+		{bytes: pow(1024, 1), expected: "1KiB"},
+		{bytes: pow(1024, 2), expected: "1MiB"},
+		{bytes: pow(1024, 3), expected: "1GiB"},
+		{bytes: pow(1024, 4), expected: "1TiB"},
+		{bytes: pow(1024, 5), expected: "1PiB"},
+		{bytes: pow(1024, 6), expected: "1EiB"},
+	}
+
+	for i, test := range tests {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			got := sizey.FormatBytes(test.bytes)
+			if test.expected != got {
+				t.Fatalf("expected '%s', got '%s'", test.expected, got)
+			}
+		})
+	}
 }
