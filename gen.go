@@ -112,6 +112,7 @@ package helpy
 //go:generate go run gen/set/set.go -type float32 -package-name float32y
 //go:generate go run gen/rand_float/rand.go -type float32 -package-name float32y
 //go:generate go run gen/abs_signed_number/abs.go -type float32 -package-name float32y
+//go:generate go run gen/fromstring_float/fromstring.go -type float32 -package-name float32y -bit-size 32
 
 // float64
 //go:generate go run gen/pointer/pointer.go -type float64 -package-name float64y
@@ -120,6 +121,7 @@ package helpy
 //go:generate go run gen/set/set.go -type float64 -package-name float64y
 //go:generate go run gen/rand_float/rand.go -type float64 -package-name float64y
 //go:generate go run gen/abs_signed_number/abs.go -type float64 -package-name float64y
+//go:generate go run gen/fromstring_float/fromstring.go -type float64 -package-name float64y -bit-size 64
 
 // bool
 //go:generate go run gen/pointer/pointer.go -type bool -package-name booly
